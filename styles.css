@@ -388,7 +388,7 @@ button, input, textarea {
   font-size: clamp(38px, 5.6vw, 98px);
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.035em;
+  letter-spacing: 0.02em;
   color: var(--text-dark);
   text-transform: uppercase;
   white-space: nowrap;
@@ -1956,7 +1956,7 @@ button, input, textarea {
   .hero-col-right .hero-giant-title {
     font-size: clamp(42px, 13vw, 64px);
     line-height: 0.92;
-    letter-spacing: -0.04em;
+    letter-spacing: 0.015em;
     padding: 0;
     margin: 0;
     justify-content: center;
