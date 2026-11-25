@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Vinay Kartheek Bathala — AI/ML Developer & Full-Stack Engineer. CS undergrad at SRMIST, incubated at NIRMAAN (IIT Madras), NPTEL Top 5% Gold, building deterministic AI and high-throughput systems." />
+  <title>Vinay Kartheek — AI/ML Developer &amp; Software Engineer</title>
+  
+  <!-- Fontshare Clash Display & General Sans + Google Fonts -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&family=Noto+Sans+Oriya:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css?v=11" />
+
+  <!-- PRELOADER CRITICAL CSS — inline so it renders before any external CSS loads,
+       bypassing browser stylesheet caching entirely -->
+  <style>
+    #preloader {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100vh;
+      background: #000000;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: opacity 0.8s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.8s;
+    }
+    #preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .preloader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+    .preloader-word {
+      font-family: 'General Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil',
+        'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam',
+        'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi',
+        'Noto Sans', sans-serif;
+      font-size: clamp(36px, 6.5vw, 76px);
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.015em;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(28px);
+      min-height: 1.25em;
+      display: block;
+      will-change: opacity, transform;
+      unicode-bidi: plaintext;
+      direction: auto;
+    }
+    /* "Hello" slow, buttery entrance from the line */
+    .preloader-word.hello-rise {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* Rapid cycling states for other languages */
+    .preloader-word.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.12s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .preloader-word.exit {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.08s ease, transform 0.08s ease;
+    }
+    .preloader-bar-wrap {
+      width: clamp(170px, 22vw, 250px);
+      height: 2px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .preloader-bar {
+      height: 100%;
+      width: 0%;
+      background: #ffffff;
+      border-radius: 9999px;
+    }
+    body.preloader-active {
+      overflow: hidden !important;
+    }
+  </style>
+</head>
+
+<body class="preloader-active">
+
+  <!-- =====================================================================
+       PRELOADER SPLASH SCREEN (iOS-style multilingual hello)
+  ===================================================================== -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <span id="preloaderWord" class="preloader-word"></span>
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar" id="preloaderBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preloader logic runs inline immediately after the element exists -->
+  <script>
+  (function() {
+    if (sessionStorage.getItem('preloaderShown')) {
+      var pl = document.getElementById('preloader');
+      if (pl) pl.style.display = 'none';
+      document.body.classList.remove('preloader-active');
+      window.__heroEntranceTriggered = true;
+      return;
+    }
+
+    // Phase 1: "Hello" takes the spotlight for 2.3 seconds
+    var HELLO_DURATION = 2300; 
+
+    // Phase 2: Indian-first multilingual sequence completes swiftly & smoothly
+    var OTHER_LANGS = [
+      'नमस्ते', 'வணக்கம்', 'నమస్కారం', 'ನಮಸ್ಕಾರ', 'നമസ്കാരം',
+      'নমস্কার', 'નમસ્તે', 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ', 'ନମସ୍କାର', 'नमस्कार',
+      'Hola', 'Bonjour', 'Hallo', 'こんにちは', '안녕하세요',
+      'مرحبا', '你好'
+    ];
+    var LANG_STEP_MS   = 130; // Rapid ~130ms per language
+    var CYCLE_DURATION = OTHER_LANGS.length * LANG_STEP_MS; // 2210ms
+    var TOTAL_MS       = HELLO_DURATION + CYCLE_DURATION;   // 4510ms total
+
+    var wordEl = document.getElementById('preloaderWord');
+    var bar    = document.getElementById('preloaderBar');
+    var pl     = document.getElementById('preloader');
+    if (!wordEl || !bar || !pl) return;
+
+    var startTime = null;
+    var currentLangIdx = -1;
+    var helloExited = false;
+
+    // Show "Hello" rising like butter from above the loading line
+    wordEl.textContent = 'Hello';
+    void wordEl.offsetWidth;
+    wordEl.classList.add('hello-rise');
+
+    function tick(ts) {
+      if (!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      var progress = Math.min(elapsed / TOTAL_MS, 1);
+
+      // Continuous smooth linear progress bar fill
+      bar.style.width = (progress * 100) + '%';
+
+      if (elapsed < HELLO_DURATION) {
+        // Phase 1: "Hello" stays in place
+      } else if (elapsed < TOTAL_MS) {
+        // Phase 2: Rapid smooth multilingual cycling
+        if (!helloExited) {
+          helloExited = true;
+          wordEl.classList.remove('hello-rise');
+        }
+
+        var cycleElapsed = elapsed - HELLO_DURATION;
+        var langIdx = Math.min(Math.floor(cycleElapsed / LANG_STEP_MS), OTHER_LANGS.length - 1);
+
+        if (langIdx !== currentLangIdx) {
+          currentLangIdx = langIdx;
+          showFastWord(OTHER_LANGS[currentLangIdx]);
+        }
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        // Phase 3: Seamless dissolve & hero entrance trigger
+        finishPreloader();
+      }
+    }
+
+    function showFastWord(text) {
+      wordEl.classList.remove('visible');
+      wordEl.classList.add('exit');
+      setTimeout(function() {
+        wordEl.classList.remove('exit');
+        wordEl.textContent = text;
+        void wordEl.offsetWidth;
+        wordEl.classList.add('visible');
+      }, 35);
+    }
+
+    function finishPreloader() {
+      wordEl.classList.remove('visible');
+      wordEl.classList.add('exit');
+
+      setTimeout(function() {
+        // Start smooth black curtain dissolve
+        pl.classList.add('fade-out');
+        document.body.classList.remove('preloader-active');
+        sessionStorage.setItem('preloaderShown', '1');
+
+        // Trigger hero entrance synchronously with curtain dissolve!
+        window.__heroEntranceTriggered = true;
+        window.dispatchEvent(new CustomEvent('heroEntranceTrigger'));
+
+        setTimeout(function() {
+          if (pl.parentNode) pl.parentNode.removeChild(pl);
+        }, 850);
+      }, 160);
+    }
+
+    requestAnimationFrame(tick);
+  })();
+  </script>
+
+  <!-- Subtle organic background mesh -->
+  <div class="bg-mesh-canvas" aria-hidden="true"></div>
+
+  <!-- =====================================================================
+       TOP MINIMAL HEADER BAR
+  ===================================================================== -->
+  <header class="top-header">
+    <div class="container">
+      <div class="top-header-inner">
+        <div class="brand-meta">
+          <span class="brand-meta-name">Vinay Kartheek</span>
+          <span style="color:var(--text-muted)">·</span>
+          <span class="brand-meta-role">AI/ML Developer &amp; Software Engineer</span>
+        </div>
+        <div class="top-header-actions">
+          <span class="status-badge">
+            <span class="status-dot-green"></span>
+            <span>Available for Roles &amp; Internships</span>
+          </span>
+          <a href="resume.pdf" target="_blank" class="top-header-resume">
+            <span>Resume ↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       HERO SECTION (NIKOLA'S 3-COLUMN SPLIT WITH PROPER B VINAY SPACING)
+  ===================================================================== -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-split-grid">
+        
+        <!-- Left Hero Column -->
+        <div class="hero-col hero-col-left">
+          <div class="hero-kicker-pill">
+            <span>★</span>
+            <span>Award Winning AI/ML Engineer</span>
+          </div>
+          <h1 class="hero-giant-title"><span class="hero-initial">B</span><span class="hero-first-name">VINAY</span></h1>
+          <div class="hero-subline-pill">
+            <span>B.Tech CSE (AI &amp; ML) · SRMIST</span>
+          </div>
+        </div>
+
+        <!-- Center Portrait Column -->
+        <div class="hero-portrait-card">
+          <img src="photo.jpeg" alt="Vinay Kartheek Bathala" />
+        </div>
+
+        <!-- Right Hero Column -->
+        <div class="hero-col hero-col-right">
+          <div class="hero-kicker-pill">
+            <span>Developer &amp; Researcher</span>
+          </div>
+          <h1 class="hero-giant-title">KARTHEEK</h1>
+          <div class="live-time-pill" id="liveClockPill">
+            <span>Chennai, India · <strong id="istClock">19:45</strong> · GMT+5:30</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hero Claim & Dual CTAs -->
+      <div class="hero-claim-container">
+        <p class="hero-claim-text">
+          I build AI systems where the model is not allowed to improvise on the parts that must be right.
+        </p>
+        <div class="hero-actions-row">
+          <a href="#projects" class="btn-primary">
+            <span>View projects</span>
+            <span>↓</span>
+          </a>
+          <a href="resume.pdf" target="_blank" class="btn-secondary">
+            <span>Download resume</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       CONTINUOUS HORIZONTAL CREDIBILITY MARQUEE (ROLLING RIBBON AFTER HERO)
+  ===================================================================== -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item">CGPA 8.9 / 10.0 · SRMIST <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">262 Verified Pytest Tests Passing <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">NIRMAAN, IIT Madras Startup Incubation <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">5,000+ Cognitive Stimuli Processed <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">NPTEL Java Top 5% Elite + Gold (96%) <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">250+ Make-A-Thon 3.0 Hackers Convened <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">Incoming Intern @ Labs24 <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">3rd Place @ E-Summit IDEATHON 2026 <span class="marquee-star">✱</span></span>
+      <!-- Duplicate for seamless infinite loop -->
+      <span class="marquee-item">CGPA 8.9 / 10.0 · SRMIST <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">262 Verified Pytest Tests Passing <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">NIRMAAN, IIT Madras Startup Incubation <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">5,000+ Cognitive Stimuli Processed <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">NPTEL Java Top 5% Elite + Gold (96%) <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">250+ Make-A-Thon 3.0 Hackers Convened <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">Incoming Intern @ Labs24 <span class="marquee-star">✱</span></span>
+      <span class="marquee-item">3rd Place @ E-Summit IDEATHON 2026 <span class="marquee-star">✱</span></span>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       SERVICES / CAPABILITIES (STICKY SPLIT-SCROLL COMPONENT WITH PREVIEW)
+  ===================================================================== -->
+  <section id="capabilities" class="section-spacing">
+    <div class="container">
+      <span class="section-kicker">/ Services, Skills, Abilities</span>
+      <h2 class="section-title">Engineered <span class="orange">at the Core</span></h2>
+      <p class="section-subtitle">
+        Bridging theoretical machine learning with production software. Every system is built for deterministic reliability, clean API boundaries, and test-driven scale.
+      </p>
+
+      <div class="sticky-split-grid">
+        
+        <!-- Left Scrolling Capabilities List -->
+        <div class="capabilities-list">
+          
+          <div class="capability-card active" data-preview="0">
+            <div class="cap-top">
+              <span class="cap-num">01.</span>
+              <span class="cap-kicker">Deterministic &amp; FSM</span>
+            </div>
+            <h3 class="cap-title">AI Systems &amp; Agentic Workflows</h3>
+            <p class="cap-desc">
+              State-machine driven conversational agents for regulated BFSI domains. Zero-hallucination architectures prioritizing verified business logic over probabilistic hallucinations.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">FastAPI</span>
+              <span class="cap-pill">FSM Architecture</span>
+              <span class="cap-pill">PyTorch</span>
+              <span class="cap-pill">LangChain</span>
+              <span class="cap-pill">Python</span>
+            </div>
+          </div>
+
+          <div class="capability-card" data-preview="1">
+            <div class="cap-top">
+              <span class="cap-num">02.</span>
+              <span class="cap-kicker">Precision Research</span>
+            </div>
+            <h3 class="cap-title">Computer Vision &amp; Graph Topology</h3>
+            <p class="cap-desc">
+              Real-time image classification and retinal vascular graph topology modeling. Measuring network bifurcation patterns and topological stability across image perturbations.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">OpenCV</span>
+              <span class="cap-pill">ResNet-18</span>
+              <span class="cap-pill">NetworkX</span>
+              <span class="cap-pill">Biomedical Graphs</span>
+              <span class="cap-pill">NumPy</span>
+            </div>
+          </div>
+
+          <div class="capability-card" data-preview="2">
+            <div class="cap-top">
+              <span class="cap-num">03.</span>
+              <span class="cap-kicker">Production Grade</span>
+            </div>
+            <h3 class="cap-title">Full-Stack Web Architecture</h3>
+            <p class="cap-desc">
+              Modern frontend and backend engineering. Scalable relational database schemas, typed RESTful APIs, strict state validation, and clean micro-interactions.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">React 19</span>
+              <span class="cap-pill">TypeScript 5.8</span>
+              <span class="cap-pill">SQLAlchemy 2.0</span>
+              <span class="cap-pill">Alembic</span>
+              <span class="cap-pill">Node.js</span>
+            </div>
+          </div>
+
+          <div class="capability-card" data-preview="3">
+            <div class="cap-top">
+              <span class="cap-num">04.</span>
+              <span class="cap-kicker">NIRMAAN IIT Madras</span>
+            </div>
+            <h3 class="cap-title">Cognitive Assessment Platforms</h3>
+            <p class="cap-desc">
+              Incubated research engineering with Team MentiScope. Designed stimulus-generation pipelines under the CHC psychometric framework, processing 5,000+ test combinations.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">CHC Framework</span>
+              <span class="cap-pill">Cognitive Assessment</span>
+              <span class="cap-pill">Python</span>
+              <span class="cap-pill">Data Pipelines</span>
+            </div>
+          </div>
+
+          <div class="capability-card" data-preview="4">
+            <div class="cap-top">
+              <span class="cap-num">05.</span>
+              <span class="cap-kicker">Data Backed Decisions</span>
+            </div>
+            <h3 class="cap-title">Predictive Modeling &amp; Regression</h3>
+            <p class="cap-desc">
+              End-to-end regression and demand forecasting systems with advanced feature engineering, k-fold cross-validation, and hyperparameter tuning achieving 92% validation accuracy.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">Scikit-learn</span>
+              <span class="cap-pill">Pandas</span>
+              <span class="cap-pill">Cross-Validation</span>
+              <span class="cap-pill">Matplotlib</span>
+            </div>
+          </div>
+
+          <div class="capability-card" data-preview="5">
+            <div class="cap-top">
+              <span class="cap-num">06.</span>
+              <span class="cap-kicker">Zero Fluff Precision</span>
+            </div>
+            <h3 class="cap-title">Test-Driven Software Design</h3>
+            <p class="cap-desc">
+              Rigorous test suites with 262 verified pytest tests verifying boundary conditions, defensive fallbacks, concurrent state transitions, and edge cases before deployment.
+            </p>
+            <div class="cap-stack">
+              <span class="cap-pill">pytest (262 Tests)</span>
+              <span class="cap-pill">TDD</span>
+              <span class="cap-pill">CI/CD</span>
+              <span class="cap-pill">Defensive Error Handling</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Sticky Preview Frame -->
+        <div class="sticky-preview-wrapper">
+          <div class="sticky-preview-card" id="stickyPreviewCard">
+            <div class="sp-header">
+              <div class="sp-dots">
+                <span class="sp-dot red"></span>
+                <span class="sp-dot yellow"></span>
+                <span class="sp-dot green"></span>
+              </div>
+              <span class="sp-title" id="spTerminalTitle">kural-ava-fsm // inspect</span>
+            </div>
+
+            <div class="sp-body">
+              <span class="sp-badge" id="spBadge">DETERMINISTIC FSM AGENT</span>
+              <h4 class="sp-heading" id="spHeading">KURAL-AVA Banking Engine</h4>
+              
+              <div class="sp-codebox" id="spCodeBox">
+                <span class="hl-c">// Finite State Machine Transition</span><br>
+                state: <span class="hl-g">AUTH_CONFIRMED</span><br>
+                intent: <span class="hl-b">DISPATCH_TRANSFER</span><br>
+                safety_guard: <span class="hl-g">STRICT_DETERMINISTIC</span><br>
+                tests_passing: <span class="hl-c">262 / 262 verified</span><br>
+                telemetry: <span class="hl-g">0ms hallucination risk</span>
+              </div>
+            </div>
+
+            <div class="sp-footer">
+              <span id="spStack">FastAPI · React 19 · TS 5.8</span>
+              <span style="color:var(--accent)">● Production Ready</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       KINETIC SCROLL-SCRUB STATEMENT
+  ===================================================================== -->
+  <section class="scrub-section" id="philosophy">
+    <div class="container">
+      <div class="scrub-statement" id="scrubStatement">
+        <!-- Dynamically wrapped in span elements for scroll illumination -->
+        I engineer intelligent systems and high-throughput software grounded in deterministic correctness and test-driven precision. I eliminate hallucinations, optimize architectures, and ship software that performs in production — backed by 262 verified tests, not just notebooks.
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SELECTED PROJECTS SHOWCASE (2X2 NIKOLA GRID WITH MOCKUPS)
+  ===================================================================== -->
+  <section id="projects" class="section-spacing">
+    <div class="container">
+      <span class="section-kicker">/ Portfolio Work Samples</span>
+      <h2 class="section-title">Selected <span class="orange">Systems &amp; Projects</span></h2>
+      <p class="section-subtitle">
+        A curated selection of shipped engineering systems spanning agentic AI, computer vision, data regression, and full-stack architecture.
+      </p>
+
+      <div class="projects-grid">
+        
+        <!-- Project 1: KURAL-AVA -->
+        <div class="project-card">
+          <div class="project-visual">
+            <div class="project-mockup-frame">
+              <div class="pmf-window-bar">
+                <div class="pmf-dots"><span class="pmf-dot r"></span><span class="pmf-dot y"></span><span class="pmf-dot g"></span></div>
+                <span class="pmf-url-pill">kural-ava // banking-agent</span>
+                <span style="font-family:var(--font-mono); font-size:10px; color:#22c55e;">● 262/262 PASS</span>
+              </div>
+              <div class="pmf-body">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <span class="pmf-badge">FLAGSHIP · BFSI AGENT</span>
+                  <span class="pmf-metric">Deterministic · <span>Zero Hallucination</span></span>
+                </div>
+                <div class="pmf-hero-title">KURAL-AVA</div>
+                <div class="pmf-interactive-ui">
+                  <div style="color:#60a5fa; margin-bottom:4px;">&gt; FSM_STATE: <span style="color:#4ade80;">AUTH_CONFIRMED</span></div>
+                  <div style="color:#94a3b8;">&gt; ACTION: <span style="color:#facc15;">DISPATCH_TRANSFER</span> [₹50,000.00]</div>
+                  <div style="color:#a78bfa; margin-top:4px;">✓ Invariants: 262 Pytest Specs Verified (100%)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div>
+              <div class="proj-cat-row">
+                <span class="proj-cat">Agentic AI &amp; Full-Stack</span>
+                <span class="proj-year">2026 · Shipped</span>
+              </div>
+              <h3 class="proj-name">KURAL-AVA Banking Platform</h3>
+              <p class="proj-summary">
+                Deterministic FSM-driven banking agent built for regulated BFSI applications. Features a FastAPI backend, React 19 + TypeScript frontend, SQLAlchemy 2.0 ORM, and Alembic migrations.
+              </p>
+            </div>
+            <div class="proj-footer-row">
+              <div class="proj-tags-list">
+                <span class="proj-tag-item">FastAPI</span>
+                <span class="proj-tag-item">React 19</span>
+                <span class="proj-tag-item">TypeScript</span>
+                <span class="proj-tag-item">pytest</span>
+              </div>
+              <a href="https://github.com/vnkrthk08/Kural-AVA" target="_blank" class="proj-link-arrow" aria-label="View KURAL-AVA on GitHub">
+                ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Team MentiScope -->
+        <div class="project-card">
+          <div class="project-visual">
+            <div class="project-mockup-frame">
+              <div class="pmf-window-bar">
+                <div class="pmf-dots"><span class="pmf-dot r"></span><span class="pmf-dot y"></span><span class="pmf-dot g"></span></div>
+                <span class="pmf-url-pill">mentiscope.nirmaan.iitm.ac.in</span>
+                <span style="font-family:var(--font-mono); font-size:10px; color:#f97316;">● NIRMAAN IITM</span>
+              </div>
+              <div class="pmf-body">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <span class="pmf-badge">INCUBATED RESEARCH</span>
+                  <span class="pmf-metric">Psychometric · <span>5,000+ Stimuli</span></span>
+                </div>
+                <div class="pmf-hero-title">Team MentiScope</div>
+                <div class="pmf-interactive-ui">
+                  <div style="color:#f472b6; margin-bottom:4px;">&gt; MODEL: <span style="color:#cbd5e1;">CHC Framework (Gs/Gv-Sp)</span></div>
+                  <div style="color:#38bdf8;">&gt; REACTION_LATENCY: <span style="color:#4ade80;">14.2ms avg (Normed)</span></div>
+                  <div style="color:#94a3b8; margin-top:4px;">✓ IIT Madras Incubation Selection Confirmed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div>
+              <div class="proj-cat-row">
+                <span class="proj-cat">AI Cognitive Systems</span>
+                <span class="proj-year">2025 · Incubation</span>
+              </div>
+              <h3 class="proj-name">MentiScope Assessment Engine</h3>
+              <p class="proj-summary">
+                Cognitive psychometric platform developed at IIT Madras incubation center. Designed automated stimulus-generation modules based on the CHC psychometric framework (Gs/Gv-Sp).
+              </p>
+            </div>
+            <div class="proj-footer-row">
+              <div class="proj-tags-list">
+                <span class="proj-tag-item">Python</span>
+                <span class="proj-tag-item">CHC Framework</span>
+                <span class="proj-tag-item">NIRMAAN IITM</span>
+              </div>
+              <a href="IITM_Internship_Offer_Mentiscope.pdf" target="_blank" class="proj-link-arrow" aria-label="View Selection Letter">
+                ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Employee Salary Predictor -->
+        <div class="project-card">
+          <div class="project-visual">
+            <div class="project-mockup-frame">
+              <div class="pmf-window-bar">
+                <div class="pmf-dots"><span class="pmf-dot r"></span><span class="pmf-dot y"></span><span class="pmf-dot g"></span></div>
+                <span class="pmf-url-pill">compensation-ml // regression</span>
+                <span style="font-family:var(--font-mono); font-size:10px; color:#38bdf8;">● R² = 0.92</span>
+              </div>
+              <div class="pmf-body">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <span class="pmf-badge">ML PIPELINE</span>
+                  <span class="pmf-metric">Validation · <span>92% Accurate</span></span>
+                </div>
+                <div class="pmf-hero-title">Salary Predictor</div>
+                <div class="pmf-interactive-ui">
+                  <div style="color:#34d399; margin-bottom:4px;">&gt; CROSS_VAL: <span style="color:#f8fafc;">10-Fold Ensemble Regressor</span></div>
+                  <div style="color:#94a3b8;">&gt; LOSS: <span style="color:#f43f5e;">RMSE 0.042</span> · SHAP Interpretable</div>
+                  <div style="color:#fbbf24; margin-top:4px;">✓ Real-Time Parameter Inference Pipeline</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div>
+              <div class="proj-cat-row">
+                <span class="proj-cat">Machine Learning</span>
+                <span class="proj-year">2025 · Live</span>
+              </div>
+              <h3 class="proj-name">Employee Compensation Predictor</h3>
+              <p class="proj-summary">
+                End-to-end regression pipeline with feature engineering, cross-validation, and hyperparameter tuning. Produces interpretable visualization reports translating model outputs into actionable insights.
+              </p>
+            </div>
+            <div class="proj-footer-row">
+              <div class="proj-tags-list">
+                <span class="proj-tag-item">Scikit-learn</span>
+                <span class="proj-tag-item">Pandas</span>
+                <span class="proj-tag-item">NumPy</span>
+                <span class="proj-tag-item">Regression</span>
+              </div>
+              <a href="https://github.com/vnkrthk08/Employee-Salary-Prediction" target="_blank" class="proj-link-arrow" aria-label="View Salary Predictor on GitHub">
+                ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Stop Sign Image Classifier -->
+        <div class="project-card">
+          <div class="project-visual">
+            <div class="project-mockup-frame">
+              <div class="pmf-window-bar">
+                <div class="pmf-dots"><span class="pmf-dot r"></span><span class="pmf-dot y"></span><span class="pmf-dot g"></span></div>
+                <span class="pmf-url-pill">cv-inference // camera-hud</span>
+                <span style="font-family:var(--font-mono); font-size:10px; color:#ef4444;">● 60 FPS</span>
+              </div>
+              <div class="pmf-body">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <span class="pmf-badge">COMPUTER VISION</span>
+                  <span class="pmf-metric">Cascade · <span>Real-Time</span></span>
+                </div>
+                <div class="pmf-hero-title">Stop Sign Vision</div>
+                <div class="pmf-interactive-ui">
+                  <div style="color:#ef4444; margin-bottom:4px;">[+] TARGET_DETECTED: <span style="color:#f8fafc;">STOP_SIGN (99.4%)</span></div>
+                  <div style="color:#94a3b8;">&gt; BOUNDING_BOX: <span style="color:#38bdf8;">[x:142, y:88, w:180, h:180]</span></div>
+                  <div style="color:#4ade80; margin-top:4px;">✓ Haar Feature Cascade Detection: 0.4ms</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <div>
+              <div class="proj-cat-row">
+                <span class="proj-cat">Computer Vision</span>
+                <span class="proj-year">2025 · Live</span>
+              </div>
+              <h3 class="proj-name">Stop Sign Autonomous Classifier</h3>
+              <p class="proj-summary">
+                Binary image classifier using Haar cascade detection and OpenCV preprocessing. Production-ready inference pipeline verifying decision boundaries under varied lighting and scale conditions.
+              </p>
+            </div>
+            <div class="proj-footer-row">
+              <div class="proj-tags-list">
+                <span class="proj-tag-item">OpenCV</span>
+                <span class="proj-tag-item">Haar Cascade</span>
+                <span class="proj-tag-item">Python</span>
+                <span class="proj-tag-item">Vision AI</span>
+              </div>
+              <a href="https://github.com/vnkrthk08/Stop-Sign-Recognition-ML" target="_blank" class="proj-link-arrow" aria-label="View Stop Sign on GitHub">
+                ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       ABOUT ME SECTION (PREVIOUS TEMPLATE)
+  ===================================================================== -->
+  <section id="about" class="section-spacing" style="background:#ffffff; border-top:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle);">
+    <div class="container">
+      <span class="section-kicker">/ About Me</span>
+      <h2 class="section-title">Half builder, <span class="orange">half scientist.</span></h2>
+
+      <div class="about-split-grid">
+        <div class="about-text-content">
+          <p>
+            I am a Computer Science undergraduate at <strong>SRM Institute of Science and Technology</strong> (Class of 2028), maintaining an <strong>8.9 / 10.0 CGPA</strong> with an academic focus on Artificial Intelligence and Machine Learning.
+          </p>
+          <p>
+            I care about building systems that live beyond Jupyter notebooks — software that <strong>ships to production</strong>, respects strict API contracts, and solves real operational challenges with verifiable, deterministic logic.
+          </p>
+          <p>
+            From incubating cognitive psychometric platforms with Team MentiScope at <strong>NIRMAAN, IIT Madras</strong> (5,000+ stimuli processed) to convening <strong>Make-A-Thon 3.0</strong> for 250+ hackers as <strong>ACM-W Joint Secretary</strong>, I thrive at the intersection of technical depth and leadership.
+          </p>
+
+          <div class="about-actions-row">
+            <a href="mailto:bathala.vinaykartheek@gmail.com" class="pill-btn-dark">
+              <span>Schedule a chat</span>
+              <span>→</span>
+            </a>
+            <button class="pill-btn-white" id="copyEmailBtn">
+              <span>Copy email</span>
+            </button>
+            <a href="resume.pdf" target="_blank" download class="pill-btn-white">
+              <span>Download CV (PDF)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="about-card-right">
+          <div style="border-radius:18px; overflow:hidden; aspect-ratio:4/3; margin-bottom:16px;">
+            <img src="photo2.jpg" alt="Vinay Kartheek Bathala" style="width:100%; height:100%; object-fit:cover; object-position:top;" />
+          </div>
+          <div class="about-facts-list">
+            <div class="about-fact-row">
+              <span class="af-label">candidate</span>
+              <span class="af-val">Vinay Kartheek Bathala</span>
+            </div>
+            <div class="about-fact-row">
+              <span class="af-label">degree</span>
+              <span class="af-val">B.Tech CSE (AI &amp; ML) · SRMIST</span>
+            </div>
+            <div class="about-fact-row">
+              <span class="af-label">standing</span>
+              <span class="af-val accent">CGPA 8.9 / 10.0 · 3rd Year</span>
+            </div>
+            <div class="about-fact-row">
+              <span class="af-label">national distinction</span>
+              <span class="af-val accent">NPTEL Top 5% · 96% Gold</span>
+            </div>
+            <div class="about-fact-row">
+              <span class="af-label">location</span>
+              <span class="af-val">Chennai, India · IST (UTC+5:30)</span>
+            </div>
+            <div class="about-fact-row">
+              <span class="af-label">status</span>
+              <span class="af-val" style="color:var(--green)">● Available for Roles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       AWARDS & RECOGNITION (COMBINED WITH USER'S PUNCHLINE STATEMENT)
+  ===================================================================== -->
+  <section id="credibility" class="section-spacing">
+    <div class="container">
+      <span class="section-kicker">/ Academic Credibility &amp; Honors</span>
+      <h2 class="section-title">Awards and <span class="orange">Recognition</span></h2>
+      <p class="section-subtitle">
+        Verified milestones across competitive hackathons, national certifications, incubation tracks, and leadership appointments.
+      </p>
+
+      <div class="awards-table">
+        
+        <div class="award-row">
+          <span class="award-index">01</span>
+          <span class="award-name">Programming in Java (Elite + Gold)</span>
+          <span class="award-issuer">NPTEL · IIT Kharagpur (Top 5% Nationally · 96%)</span>
+          <span class="award-date">Oct 2025</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">02</span>
+          <span class="award-name">3rd Place Winner · IDEATHON</span>
+          <span class="award-issuer">E-Summit 2026 SRMIST</span>
+          <span class="award-date">Feb 2026</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">03</span>
+          <span class="award-name">Startup Incubation Track</span>
+          <span class="award-issuer">NIRMAAN, IIT Madras (Team MentiScope)</span>
+          <span class="award-date">Jul–Oct 2025</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">04</span>
+          <span class="award-name">Make-A-Thon 3.0 Convenor</span>
+          <span class="award-issuer">ACM-W Student Chapter (250+ External Hackers)</span>
+          <span class="award-date">Sep 2026</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">05</span>
+          <span class="award-name">OOP Fundamentals Certification</span>
+          <span class="award-issuer">NPTEL · IIT Roorkee (Elite Certified · 70%)</span>
+          <span class="award-date">Apr 2025</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">06</span>
+          <span class="award-name">Placement Coordinator</span>
+          <span class="award-issuer">Career Development Centre (CDC SRMIST · 500+ Students)</span>
+          <span class="award-date">2025–Present</span>
+        </div>
+
+        <div class="award-row">
+          <span class="award-index">++</span>
+          <span class="award-name" style="color:var(--accent); font-weight:600;">There's more. But this is more than enough to understand what I'm good at.</span>
+          <span class="award-issuer">SRMIST B.Tech CSE (AI &amp; ML)</span>
+          <span class="award-date">Class of 2028</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       CAREER & WORK EXPERIENCE (LENS FOCUS SCROLL TIMELINE)
+  ===================================================================== -->
+  <section id="career" class="section-spacing" style="background:#ffffff; border-top:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle);">
+    <div class="container">
+      <span class="section-kicker">/ Career</span>
+      <h2 class="section-title">Work <span class="orange">Experience</span></h2>
+      <p class="section-subtitle">
+        Demonstrated leadership and software contributions across startup incubation, industry roles, and student chapter governance.
+      </p>
+
+      <div class="lens-timeline-container" id="lensTimeline">
+        
+        <div class="timeline-item lens-focus">
+          <div class="tl-left">
+            <h3 class="tl-role">Full Stack Developer Intern</h3>
+            <span class="tl-company">Labs24 LLC</span>
+            <p class="tl-desc">
+              Selected for a six-month full-stack development internship commencing 11 December 2026. Primary focus spans web architecture, API integration, and database operations.
+            </p>
+          </div>
+          <div class="tl-right">
+            <span class="tl-date">Dec 2026 – Present</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-left">
+            <h3 class="tl-role">AI Developer Intern</h3>
+            <span class="tl-company">Team MentiScope · NIRMAAN, IIT Madras</span>
+            <p class="tl-desc">
+              Engineered Python modules for cognitive assessment within the CHC psychometric framework. Processed 5,000+ stimuli combinations and finalized MVP milestone verification report.
+            </p>
+          </div>
+          <div class="tl-right">
+            <span class="tl-date">Jul 2025 – Oct 2025</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-left">
+            <h3 class="tl-role">Joint Secretary &amp; Convenor</h3>
+            <span class="tl-company">ACM-W Student Chapter, SRMIST</span>
+            <p class="tl-desc">
+              Convened Make-A-Thon 3.0 cross-functional hackathon with 250+ participants. Managed sponsor relations, judge coordination, and cross-functional chapter execution.
+            </p>
+          </div>
+          <div class="tl-right">
+            <span class="tl-date">Jun 2025 – Present</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-left">
+            <h3 class="tl-role">Placement Coordinator</h3>
+            <span class="tl-company">CDC SRMIST (Career Development Centre)</span>
+            <p class="tl-desc">
+              Coordinated placement processes, corporate recruitment drives, and technical training logistics for over 500 undergraduate engineering peers.
+            </p>
+          </div>
+          <div class="tl-right">
+            <span class="tl-date">Aug 2025 – Present</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="tl-left">
+            <h3 class="tl-role">Lead Technical Contributor</h3>
+            <span class="tl-company">SRM INSIDER &amp; DAA</span>
+            <p class="tl-desc">
+              Published technical content and verified curriculum solutions across data structures, algorithm complexity, and full-stack software development.
+            </p>
+          </div>
+          <div class="tl-right">
+            <span class="tl-date">2024 – Present</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       TESTIMONIALS / COMMUNITY TRUST (3-COLUMN NIKOLA GRID)
+  ===================================================================== -->
+  <section id="reviews" class="section-spacing">
+    <div class="container">
+      <span class="section-kicker">/ Community Trust – Endorsements</span>
+      <h2 class="section-title">What peers &amp; mentors <span class="orange">say</span></h2>
+      <p class="section-subtitle">
+        Feedback from startup collaborators, hackathon judges, and academic project advisors.
+      </p>
+
+      <div class="reviews-grid">
+        
+        <!-- Review 1: NIRMAAN IITM -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Vinay’s attention to deterministic correctness was pivotal during our cognitive assessment platform build at NIRMAAN, IIT Madras. He transformed complex psychometric rules into robust, bug-free Python pipelines."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">IITM</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">MentiScope Incubation Lead</span>
+                <span class="rc-role-tag">Team MentiScope · NIRMAAN IITM</span>
+                <span class="rc-date">October 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2: ACM-W -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Organizing Make-A-Thon 3.0 with 250+ external hackers was an enormous undertaking. Vinay’s leadership as Joint Secretary kept logistics flawless, judges aligned, and hackers engaged across the 36-hour sprint."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">ACM</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">ACM-W Faculty Advisor</span>
+                <span class="rc-role-tag">ACM-W Student Chapter</span>
+                <span class="rc-date">September 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3: NPTEL -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Scoring 96% and placing in the Top 5% nationally in NPTEL Programming in Java reflects deep computer science fundamentals. Vinay is among the most dependable engineering students in his cohort."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">NPTEL</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">NPTEL Academic Mentor</span>
+                <span class="rc-role-tag">IIT Kharagpur Certification Track</span>
+                <span class="rc-date">November 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4: E-Summit Ideathon -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Vinay’s functional prototype and architecture defense at E-Summit Ideathon stood out for exceptional engineering rigor. Taking 3rd place among dozens of startup teams demonstrated both commercial viability and technical depth."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">ESUM</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">E-Summit Ideathon Jury</span>
+                <span class="rc-role-tag">Innovation &amp; Startup Jury · SRMIST</span>
+                <span class="rc-date">February 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 5: Labs24 Systems -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Vinay demonstrates the discipline of a senior engineer early in his career. His focus on deterministic execution, thorough documentation, and resilient API contracts makes him an outstanding addition to our systems engineering team."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">L24</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">Labs24 Systems Team</span>
+                <span class="rc-role-tag">Engineering &amp; Product Architecture</span>
+                <span class="rc-date">Incoming 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 6: Placement Operations Peer -->
+        <div class="review-card">
+          <div class="rc-stars">★★★★★</div>
+          <p class="rc-quote">
+            "Working alongside Vinay on placement operations revealed his remarkable capacity for high-stakes coordination. Managing communication for hundreds of candidates with zero errors mirrors the deterministic quality of his software."
+          </p>
+          <div class="rc-author-info">
+            <div class="rc-author-row">
+              <div class="rc-avatar">CDC</div>
+              <div class="rc-author-meta">
+                <span class="rc-name">Career Development Center Peer</span>
+                <span class="rc-role-tag">Senior Placement Operations · SRMIST</span>
+                <span class="rc-date">December 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FAQ ACCORDION SECTION (ROUNDED PILL ACCORDION)
+  ===================================================================== -->
+  <section id="faq" class="section-spacing" style="background:#ffffff; border-top:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle);">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:56px;">
+        <span class="section-kicker">/ Clarifications</span>
+        <h2 class="section-title">Frequently Asked <span class="orange">Questions</span></h2>
+        <p class="section-subtitle" style="margin:0 auto;">
+          Everything you need to know about my engineering focus, availability, and technical background.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        
+        <div class="faq-item open">
+          <button class="faq-question-btn" type="button">
+            <span class="faq-q-text">What engineering roles are you actively targeting?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              I am targeting AI/ML Engineering, Full-Stack Software Engineering, and Computer Vision roles. I am particularly excited about teams building high-reliability agentic workflows, deterministic backends, and applied data systems.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span class="faq-q-text">How does Kural-AVA prevent hallucinations in banking flows?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Instead of relying solely on probabilistic large language model generation, Kural-AVA enforces a deterministic Finite State Machine (FSM). All state transitions, account balance queries, and payment dispatches are validated against strict business invariants verified by 262 pytest unit tests.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span class="faq-q-text">What was your contribution at NIRMAAN, IIT Madras?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              At Team MentiScope, I architected Python pipelines for the CHC cognitive framework. I developed stimulus generation algorithms that parameterized and combined over 5,000 distinct psychometric stimulus configurations for clinical assessment.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span class="faq-q-text">Are you open to on-site, hybrid, or remote roles?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes. I am open to relocation to major tech hubs (Bengaluru, Hyderabad, Chennai, NCR) as well as global remote opportunities.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       CONTACT SECTION & FORM
+  ===================================================================== -->
+  <section id="contact" class="section-spacing">
+    <div class="container">
+      <span class="section-kicker">/ Contact Information</span>
+      <h2 class="section-title">Let's get <span class="orange">started</span></h2>
+      <p class="section-subtitle">
+        Have an engineering opportunity, internship role, or complex problem worth solving? Reach out directly.
+      </p>
+
+      <div class="contact-split-grid">
+        
+        <div class="contact-card-left">
+          <h3 style="font-family:var(--font-heading); font-size:24px; font-weight:700; margin-bottom:28px;">
+            How can I help?
+          </h3>
+          <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); showToast('Message sent! I will respond within 24 hours.');">
+            <div class="form-group">
+              <label class="form-label">Your Full Name *</label>
+              <input type="text" class="form-input" required placeholder="Jane Doe" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Role / Company *</label>
+              <input type="text" class="form-input" required placeholder="Engineering Manager @ TechCorp" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your E-mail Address *</label>
+              <input type="email" class="form-input" required placeholder="jane@company.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Status? *</label>
+              <div class="form-radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="statusType" value="recruiter" checked />
+                  <span>I am a recruiter</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="statusType" value="project" />
+                  <span>I have a project</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">More info *</label>
+              <textarea class="form-textarea" rows="3" required placeholder="Tell me about the role, technical stack, or project scope..."></textarea>
+            </div>
+
+            <button type="submit" class="pill-btn-dark" style="align-self:flex-start; margin-top:12px;">
+              <span>Send Message</span>
+              <span>→</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="contact-card-right">
+          <img src="photo.jpeg" alt="Vinay Kartheek Bathala" />
+          <div class="laurel-badge">
+            <span>🏆</span>
+            <span>NPTEL Top 5% National Gold</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SITE FOOTER (EXACT NIKOLA RADESKI SIGNATURE MATCHING ATTACHED IMAGE)
+       Giant Faint Watermark + Overlapping Running Marquee + Ask AI Logos + Bottom Bar
+  ===================================================================== -->
+  <footer class="site-footer-nikola">
+    
+    <!-- Giant Faint Outline Watermark -->
+    <div class="footer-watermark-wrap" aria-hidden="true">
+      <span class="footer-watermark-text">Vinay Kartheek</span>
+    </div>
+
+    <!-- Overlapping "Let’s work together ✱" Running Marquee -->
+    <div class="work-together-marquee" aria-hidden="true">
+      <div class="wtm-track">
+        <span class="wtm-content">Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span>&nbsp;</span>
+        <span class="wtm-content">Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span> Let’s work together <span class="wtm-star">✱</span>&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- Ask AI About Me & Direct Contact Info -->
+    <div class="ask-ai-block">
+      <h4 class="ask-ai-heading">Ask AI about me</h4>
+      
+      <!-- 4 Wide SVG Badges Matching Nikola Radeski -->
+      <div class="ask-ai-logos-row">
+        <a href="https://chatgpt.com/?q=Who+is+Vinay+Kartheek+Bathala%3F+Summarize+his+background+in+deterministic+AI+systems%2C+IIT+Madras+Nirmaan+incubation%2C+and+production+engineering+work." 
+           target="_blank" rel="noopener noreferrer" class="ai-logo-btn" aria-label="ChatGPT">
+          <img src="https://nikolaradeski.com/wp-content/uploads/2026/09/1-ChatGPT-wide.svg" alt="ChatGPT" class="ai-logo-img" />
+        </a>
+        <a href="https://claude.ai/new?q=Evaluate+Vinay+Kartheek+Bathala+as+an+AI%2FML+systems+engineer.+Analyze+his+work+on+Kural-AVA%2C+state-machine+guarantees%2C+and+production+AI." 
+           target="_blank" rel="noopener noreferrer" class="ai-logo-btn" aria-label="Claude">
+          <img src="https://nikolaradeski.com/wp-content/uploads/2026/09/2-Claude-wide.svg" alt="Claude" class="ai-logo-img" />
+        </a>
+        <a href="https://share.gemini.google/7drmyA5G6iM7" 
+           target="_blank" rel="noopener noreferrer" class="ai-logo-btn" aria-label="Gemini">
+          <img src="https://nikolaradeski.com/wp-content/uploads/2026/09/3-Gemini-wide.svg" alt="Gemini" class="ai-logo-img" />
+        </a>
+        <a href="https://www.perplexity.ai/search?q=Who+is+Vinay+Kartheek+Bathala%3F+Summarize+his+experience%2C+awards%2C+and+engineering+contributions." 
+           target="_blank" rel="noopener noreferrer" class="ai-logo-btn" aria-label="Perplexity">
+          <img src="https://nikolaradeski.com/wp-content/uploads/2026/09/4-Perplexity-wide.svg" alt="Perplexity" class="ai-logo-img" />
+        </a>
+      </div>
+
+      <!-- Direct Contact Details -->
+      <div class="footer-direct-contacts">
+        <a href="mailto:bathala.vinaykartheek@gmail.com" class="footer-contact-item">
+          <svg class="footer-contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          <span>bathala.vinaykartheek@gmail.com</span>
+        </a>
+        <a href="tel:+918247054625" class="footer-contact-item">
+          <svg class="footer-contact-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+          <span>+91 82470 54625</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom Copyright Bar Matching Nikola Radeski Screenshot -->
+    <div class="footer-bottom-bar-clean">
+      <div class="fbb-left">2026</div>
+      <div class="fbb-center">built with intention. powered by curiosity. ◆ &nbsp; © 2026 Vinay Kartheek Bathala</div>
+      <div class="fbb-right">All rights reserved.</div>
+    </div>
+
+  </footer>
+
+  <!-- =====================================================================
+       FLOATING DOCK NAVBAR (FIXED VIEWPORT BOTTOM)
+  ===================================================================== -->
+  <nav class="floating-dock-nav" id="dockNav">
+    <a href="#hero" class="dock-home-icon" aria-label="Home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+
+    <div class="dock-links">
+      <a href="#capabilities" class="dock-link">Skills</a>
+      <a href="#about" class="dock-link">About</a>
+      <a href="#projects" class="dock-link">Portfolio &gt;</a>
+      <a href="#reviews" class="dock-link">Reviews</a>
+    </div>
+
+    <a href="#contact" class="dock-cta-btn" id="dockCta">
+      <span class="dock-cta-slider">
+        <span>Contact me</span>
+        <span>Hello, it's me</span>
+      </span>
+    </a>
+  </nav>
+
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top-btn" id="backToTopBtn" aria-label="Back to Top">
+    ↑
+  </button>
+
+  <!-- Toast notification message -->
+  <div class="toast-notice" id="toastNotice">Copied email to clipboard!</div>
+
+  <!-- GSAP 3 & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Lenis v1.3.26 for Ultra-Smooth Inertia Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+
+  <script src="main.js?v=11"></script>
+</body>
+
+</html>

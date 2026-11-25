@@ -1,0 +1,52 @@
+# ==============================================================================
+# GITIGNORE — Vinay Kartheek Portfolio Repository
+# ==============================================================================
+
+# Legacy / Development subfolders
+portfolio-website-c1/
+new-resume/
+
+# Node & package manager directories
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python & testing caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+
+# Environment files & secrets
+.env
+.env.local
+.env.*.local
+
+# Operating System artifacts
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Local backups, archives, and temporary files
+*.bak
+*.tmp
+*.temp
+*_archive.pdf
+*.log
