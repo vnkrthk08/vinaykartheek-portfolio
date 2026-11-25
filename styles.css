@@ -2834,6 +2834,10 @@ button, input, textarea {
 /* =====================================================================
    EXACT NIKOLA RADESKI FOOTER (WATERMARK + MARQUEE + ASK AI + BOTTOM BAR)
    ===================================================================== */
+#contact {
+  padding-bottom: clamp(24px, 3.5vw, 44px);
+}
+
 .site-footer-nikola {
   position: relative;
   width: 100%;
@@ -2847,7 +2851,7 @@ button, input, textarea {
   width: 100%;
   overflow: hidden;
   text-align: center;
-  padding-top: clamp(50px, 7vw, 100px);
+  padding-top: clamp(10px, 1.8vw, 24px);
 }
 
 .footer-watermark-text {
@@ -2870,7 +2874,7 @@ button, input, textarea {
 
 .ask-ai-block {
   text-align: center;
-  padding: clamp(36px, 4.5vw, 64px) 20px clamp(28px, 3.5vw, 48px);
+  padding: clamp(20px, 2.5vw, 36px) 20px 8px;
   max-width: 1080px;
   margin: 0 auto;
   position: relative;
@@ -2952,8 +2956,8 @@ button, input, textarea {
   justify-content: space-between;
   align-items: center;
   max-width: 1280px;
-  margin: clamp(36px, 4vw, 56px) auto 0;
-  padding: 24px 36px 28px;
+  margin: 16px auto 0;
+  padding: 16px 36px 24px;
   font-family: var(--font-body);
   font-size: 14px;
   color: #333333;
