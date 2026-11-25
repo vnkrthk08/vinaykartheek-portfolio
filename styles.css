@@ -1905,7 +1905,8 @@ button, input, textarea {
   .top-header {
     padding: 16px 0;
   }
-  .brand-meta-role {
+  .brand-meta-role,
+  .brand-meta-sep {
     display: none;
   }
   .status-badge {
@@ -2127,10 +2128,7 @@ button, input, textarea {
 
   /* Back to Top floating button */
   .back-to-top-btn {
-    bottom: 74px;
-    right: 16px;
-    width: 42px;
-    height: 42px;
+    display: none !important;
   }
 }
 
@@ -3004,6 +3002,9 @@ button, input, textarea {
 }
 
 @media (max-width: 860px) {
+  .site-footer-nikola {
+    padding-bottom: 84px;
+  }
   .footer-bottom-bar-clean {
     flex-direction: column;
     gap: 14px;
