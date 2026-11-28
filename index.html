@@ -41,44 +41,81 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 26px;
+      gap: 28px;
+    }
+    /* Fixed-height stage prevents ANY vertical jitter across different scripts */
+    .preloader-word-stage {
+      position: relative;
+      width: 90vw;
+      max-width: 720px;
+      height: clamp(54px, 9.5vw, 110px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
     .preloader-word {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: 'General Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil',
         'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam',
         'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi',
         'Noto Sans', sans-serif;
       font-size: clamp(36px, 6.5vw, 76px);
       font-weight: 600;
+      line-height: 1.2;
       color: #ffffff;
       letter-spacing: -0.015em;
       text-align: center;
       opacity: 0;
-      transform: translateY(28px);
-      min-height: 1.25em;
-      display: block;
-      will-change: opacity, transform;
+      transform: translateY(34px) scale(0.96);
+      filter: blur(10px);
+      will-change: opacity, transform, filter;
       unicode-bidi: plaintext;
       direction: auto;
+      pointer-events: none;
     }
-    /* "Hello" slow, buttery entrance from the line */
+    /* Phase 1: Apple-style "Hello" turn-on reveal */
+    .preloader-word.hello-init {
+      opacity: 0;
+      transform: translateY(34px) scale(0.95);
+      filter: blur(12px);
+      letter-spacing: 0.04em;
+    }
     .preloader-word.hello-rise {
       opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+      letter-spacing: -0.015em;
+      transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+                  letter-spacing 1.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* Rapid cycling states for other languages */
-    .preloader-word.visible {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.12s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .preloader-word.exit {
+    /* Phase 2: Silky dual-layer cross-fade for other languages (zero shaking) */
+    .preloader-word.lang-enter {
       opacity: 0;
-      transform: translateY(-8px);
-      transition: opacity 0.08s ease, transform 0.08s ease;
+      transform: translateY(8px) scale(0.985);
+      filter: blur(4px);
+    }
+    .preloader-word.lang-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+      transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .preloader-word.lang-exit {
+      opacity: 0;
+      transform: translateY(-6px) scale(1.01);
+      filter: blur(4px);
+      transition: opacity 0.20s ease-out,
+                  transform 0.20s ease-out,
+                  filter 0.20s ease-out;
     }
     .preloader-bar-wrap {
       width: clamp(170px, 22vw, 250px);
@@ -106,7 +143,10 @@
   ===================================================================== -->
   <div id="preloader" aria-hidden="true">
     <div class="preloader-inner">
-      <span id="preloaderWord" class="preloader-word"></span>
+      <div class="preloader-word-stage">
+        <span id="preloaderWordA" class="preloader-word hello-init"></span>
+        <span id="preloaderWordB" class="preloader-word lang-enter"></span>
+      </div>
       <div class="preloader-bar-wrap">
         <div class="preloader-bar" id="preloaderBar"></div>
       </div>
@@ -124,33 +164,58 @@
       return;
     }
 
-    // Phase 1: "Hello" takes the spotlight for 2.3 seconds
-    var HELLO_DURATION = 2300; 
+    // Phase 1: "Hello" Apple-style boot-up reveal & spotlight (2.2s)
+    var HELLO_DURATION = 2200;
 
-    // Phase 2: Indian-first multilingual sequence completes swiftly & smoothly
+    // Phase 2: Curated multilingual greetings with smooth cross-fade (no shaking)
     var OTHER_LANGS = [
       'नमस्ते', 'வணக்கம்', 'నమస్కారం', 'ನಮಸ್ಕಾರ', 'നമസ്കാരം',
-      'নমস্কার', 'નમસ્તે', 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ', 'ନମସ୍କାର', 'नमस्कार',
       'Hola', 'Bonjour', 'Hallo', 'こんにちは', '안녕하세요',
       'مرحبا', '你好'
     ];
-    var LANG_STEP_MS   = 130; // Rapid ~130ms per language
-    var CYCLE_DURATION = OTHER_LANGS.length * LANG_STEP_MS; // 2210ms
-    var TOTAL_MS       = HELLO_DURATION + CYCLE_DURATION;   // 4510ms total
+    var LANG_STEP_MS   = 220; // Silky 220ms pace per language
+    var CYCLE_DURATION = OTHER_LANGS.length * LANG_STEP_MS; // 2640ms
+    var TOTAL_MS       = HELLO_DURATION + CYCLE_DURATION;   // 4840ms total
 
-    var wordEl = document.getElementById('preloaderWord');
-    var bar    = document.getElementById('preloaderBar');
-    var pl     = document.getElementById('preloader');
-    if (!wordEl || !bar || !pl) return;
+    var wordA = document.getElementById('preloaderWordA');
+    var wordB = document.getElementById('preloaderWordB');
+    var bar   = document.getElementById('preloaderBar');
+    var pl    = document.getElementById('preloader');
+    if (!wordA || !wordB || !bar || !pl) return;
 
+    var activeSlot = wordA;
+    var standbySlot = wordB;
     var startTime = null;
     var currentLangIdx = -1;
-    var helloExited = false;
 
-    // Show "Hello" rising like butter from above the loading line
-    wordEl.textContent = 'Hello';
-    void wordEl.offsetWidth;
-    wordEl.classList.add('hello-rise');
+    // Double-rAF guarantees browser paints hidden initial state before animating
+    wordA.textContent = 'Hello';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        wordA.classList.remove('hello-init');
+        wordA.classList.add('hello-rise');
+      });
+    });
+
+    function crossFadeWord(text) {
+      // Fade out currently active slot
+      activeSlot.classList.remove('hello-rise', 'lang-active');
+      activeSlot.classList.add('lang-exit');
+
+      // Prepare incoming standby slot
+      standbySlot.classList.remove('hello-rise', 'hello-init', 'lang-exit', 'lang-active');
+      standbySlot.classList.add('lang-enter');
+      standbySlot.textContent = text;
+      void standbySlot.offsetWidth;
+
+      standbySlot.classList.remove('lang-enter');
+      standbySlot.classList.add('lang-active');
+
+      // Swap roles
+      var temp = activeSlot;
+      activeSlot = standbySlot;
+      standbySlot = temp;
+    }
 
     function tick(ts) {
       if (!startTime) startTime = ts;
@@ -160,21 +225,13 @@
       // Continuous smooth linear progress bar fill
       bar.style.width = (progress * 100) + '%';
 
-      if (elapsed < HELLO_DURATION) {
-        // Phase 1: "Hello" stays in place
-      } else if (elapsed < TOTAL_MS) {
-        // Phase 2: Rapid smooth multilingual cycling
-        if (!helloExited) {
-          helloExited = true;
-          wordEl.classList.remove('hello-rise');
-        }
-
+      if (elapsed >= HELLO_DURATION && elapsed < TOTAL_MS) {
         var cycleElapsed = elapsed - HELLO_DURATION;
         var langIdx = Math.min(Math.floor(cycleElapsed / LANG_STEP_MS), OTHER_LANGS.length - 1);
 
         if (langIdx !== currentLangIdx) {
           currentLangIdx = langIdx;
-          showFastWord(OTHER_LANGS[currentLangIdx]);
+          crossFadeWord(OTHER_LANGS[currentLangIdx]);
         }
       }
 
@@ -186,20 +243,9 @@
       }
     }
 
-    function showFastWord(text) {
-      wordEl.classList.remove('visible');
-      wordEl.classList.add('exit');
-      setTimeout(function() {
-        wordEl.classList.remove('exit');
-        wordEl.textContent = text;
-        void wordEl.offsetWidth;
-        wordEl.classList.add('visible');
-      }, 35);
-    }
-
     function finishPreloader() {
-      wordEl.classList.remove('visible');
-      wordEl.classList.add('exit');
+      activeSlot.classList.remove('lang-active', 'hello-rise');
+      activeSlot.classList.add('lang-exit');
 
       setTimeout(function() {
         // Start smooth black curtain dissolve
@@ -214,7 +260,7 @@
         setTimeout(function() {
           if (pl.parentNode) pl.parentNode.removeChild(pl);
         }, 850);
-      }, 160);
+      }, 220);
     }
 
     requestAnimationFrame(tick);
