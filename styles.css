@@ -1145,7 +1145,8 @@ button, input, textarea {
 
 .award-row {
   display: grid;
-  grid-template-columns: 60px 1.6fr 1.6fr 140px;
+  grid-template-columns: 48px 1.9fr 1.5fr 95px;
+  gap: 20px;
   align-items: center;
   padding: 24px 0;
   border-bottom: 1px solid var(--border-subtle);
