@@ -16,119 +16,53 @@
   
   <link rel="stylesheet" href="styles.css?v=11" />
 
-  <!-- PRELOADER CRITICAL CSS — inline so it renders before any external CSS loads,
-       bypassing browser stylesheet caching entirely -->
+  <!-- PRELOADER CRITICAL CSS — Exact Nikola Radeski "Hello" letter-by-letter riseUpFade -->
   <style>
     #preloader {
       position: fixed;
-      inset: 0;
-      width: 100%;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
       background: #000000;
-      z-index: 999999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: opacity 0.8s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.8s;
-    }
-    #preloader.fade-out {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .preloader-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-    }
-    /* Fixed-height stage prevents ANY vertical jitter across different scripts */
-    .preloader-word-stage {
-      position: relative;
-      width: 90vw;
-      max-width: 720px;
-      height: clamp(54px, 9.5vw, 110px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .preloader-word {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'General Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil',
-        'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam',
-        'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi',
-        'Noto Sans', sans-serif;
-      font-size: clamp(36px, 6.5vw, 76px);
-      font-weight: 600;
-      line-height: 1.2;
       color: #ffffff;
-      letter-spacing: -0.015em;
-      text-align: center;
+      font-family: 'General Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil',
+        'Noto Sans Telugu', 'Noto Sans', sans-serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      pointer-events: all;
+    }
+    #preloader.hidden {
       opacity: 0;
-      transform: translateY(34px) scale(0.96);
-      filter: blur(10px);
-      will-change: opacity, transform, filter;
-      unicode-bidi: plaintext;
-      direction: auto;
       pointer-events: none;
     }
-    /* Phase 1: Apple-style "Hello" turn-on reveal */
-    .preloader-word.hello-init {
+    #preloader-text {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 1.4em;
+      text-align: center;
+      unicode-bidi: plaintext;
+    }
+    #preloader-text span {
       opacity: 0;
-      transform: translateY(34px) scale(0.95);
-      filter: blur(12px);
-      letter-spacing: 0.04em;
+      transform: translateY(20px);
+      display: inline-block;
+      animation: riseUpFade 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-    .preloader-word.hello-rise {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0px);
-      letter-spacing: -0.015em;
-      transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 1.25s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 1.15s cubic-bezier(0.16, 1, 0.3, 1),
-                  letter-spacing 1.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    /* Phase 2: Silky dual-layer cross-fade for other languages (zero shaking) */
-    .preloader-word.lang-enter {
-      opacity: 0;
-      transform: translateY(8px) scale(0.985);
-      filter: blur(4px);
-    }
-    .preloader-word.lang-active {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0px);
-      transition: opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-                  filter 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .preloader-word.lang-exit {
-      opacity: 0;
-      transform: translateY(-6px) scale(1.01);
-      filter: blur(4px);
-      transition: opacity 0.20s ease-out,
-                  transform 0.20s ease-out,
-                  filter 0.20s ease-out;
-    }
-    .preloader-bar-wrap {
-      width: clamp(170px, 22vw, 250px);
-      height: 2px;
-      background: rgba(255, 255, 255, 0.14);
-      border-radius: 9999px;
-      overflow: hidden;
-    }
-    .preloader-bar {
-      height: 100%;
-      width: 0%;
-      background: #ffffff;
-      border-radius: 9999px;
+    @keyframes riseUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     body.preloader-active {
       overflow: hidden !important;
@@ -139,131 +73,67 @@
 <body class="preloader-active">
 
   <!-- =====================================================================
-       PRELOADER SPLASH SCREEN (iOS-style multilingual hello)
+       PRELOADER SPLASH SCREEN (Exact Nikola Radeski Hello riseUpFade)
   ===================================================================== -->
   <div id="preloader" aria-hidden="true">
-    <div class="preloader-inner">
-      <div class="preloader-word-stage">
-        <span id="preloaderWordA" class="preloader-word hello-init"></span>
-        <span id="preloaderWordB" class="preloader-word lang-enter"></span>
-      </div>
-      <div class="preloader-bar-wrap">
-        <div class="preloader-bar" id="preloaderBar"></div>
-      </div>
-    </div>
+    <span id="preloader-text"><span style="animation-delay: 0s;">H</span><span style="animation-delay: 0.1s;">e</span><span style="animation-delay: 0.2s;">l</span><span style="animation-delay: 0.3s;">l</span><span style="animation-delay: 0.4s;">o</span></span>
   </div>
 
   <!-- Preloader logic runs inline immediately after the element exists -->
   <script>
   (function() {
+    'use strict';
+
+    var pl = document.getElementById('preloader');
+    var textEl = document.getElementById('preloader-text');
+    if (!pl || !textEl) return;
+
+    // Skip on repeat navigations within the same session
     if (sessionStorage.getItem('preloaderShown')) {
-      var pl = document.getElementById('preloader');
-      if (pl) pl.style.display = 'none';
+      pl.style.display = 'none';
       document.body.classList.remove('preloader-active');
       window.__heroEntranceTriggered = true;
       return;
     }
 
-    // Phase 1: "Hello" Apple-style boot-up reveal & spotlight (2.2s)
-    var HELLO_DURATION = 2200;
-
-    // Phase 2: Curated multilingual greetings with smooth cross-fade (no shaking)
-    var OTHER_LANGS = [
-      'नमस्ते', 'வணக்கம்', 'నమస్కారం', 'ನಮಸ್ಕಾರ', 'നമസ്കാരം',
-      'Hola', 'Bonjour', 'Hallo', 'こんにちは', '안녕하세요',
-      'مرحبا', '你好'
+    // Phase 1: "Hello" letter-by-letter riseUpFade (0..650ms) + crisp hold (until 1250ms)
+    // Phase 2: Clean zero-shake greeting cycle (~140ms per word)
+    var greetings = [
+      'नमस्ते', 'வணக்கம்', 'నమస్కారం',
+      'Ciao', 'Hola', 'Bonjour',
+      'こんにちは', '안녕하세요', '你好', 'Dia Dhuit'
     ];
-    var LANG_STEP_MS   = 220; // Silky 220ms pace per language
-    var CYCLE_DURATION = OTHER_LANGS.length * LANG_STEP_MS; // 2640ms
-    var TOTAL_MS       = HELLO_DURATION + CYCLE_DURATION;   // 4840ms total
+    var HELLO_HOLD_MS = 1250;
+    var STEP_MS = 140;
 
-    var wordA = document.getElementById('preloaderWordA');
-    var wordB = document.getElementById('preloaderWordB');
-    var bar   = document.getElementById('preloaderBar');
-    var pl    = document.getElementById('preloader');
-    if (!wordA || !wordB || !bar || !pl) return;
+    setTimeout(function() {
+      var idx = 0;
+      textEl.textContent = greetings[idx++];
 
-    var activeSlot = wordA;
-    var standbySlot = wordB;
-    var startTime = null;
-    var currentLangIdx = -1;
+      var timer = setInterval(function() {
+        if (idx < greetings.length) {
+          textEl.textContent = greetings[idx++];
+        } else {
+          clearInterval(timer);
 
-    // Double-rAF guarantees browser paints hidden initial state before animating
-    wordA.textContent = 'Hello';
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        wordA.classList.remove('hello-init');
-        wordA.classList.add('hello-rise');
-      });
-    });
+          // Phase 3: Smooth opacity fade-out + synchronized hero entrance
+          setTimeout(function() {
+            sessionStorage.setItem('preloaderShown', '1');
+            pl.classList.add('hidden');
+            document.body.classList.remove('preloader-active');
 
-    function crossFadeWord(text) {
-      // Fade out currently active slot
-      activeSlot.classList.remove('hello-rise', 'lang-active');
-      activeSlot.classList.add('lang-exit');
+            setTimeout(function() {
+              window.__heroEntranceTriggered = true;
+              window.dispatchEvent(new CustomEvent('heroEntranceTrigger'));
+            }, 120);
 
-      // Prepare incoming standby slot
-      standbySlot.classList.remove('hello-rise', 'hello-init', 'lang-exit', 'lang-active');
-      standbySlot.classList.add('lang-enter');
-      standbySlot.textContent = text;
-      void standbySlot.offsetWidth;
-
-      standbySlot.classList.remove('lang-enter');
-      standbySlot.classList.add('lang-active');
-
-      // Swap roles
-      var temp = activeSlot;
-      activeSlot = standbySlot;
-      standbySlot = temp;
-    }
-
-    function tick(ts) {
-      if (!startTime) startTime = ts;
-      var elapsed = ts - startTime;
-      var progress = Math.min(elapsed / TOTAL_MS, 1);
-
-      // Continuous smooth linear progress bar fill
-      bar.style.width = (progress * 100) + '%';
-
-      if (elapsed >= HELLO_DURATION && elapsed < TOTAL_MS) {
-        var cycleElapsed = elapsed - HELLO_DURATION;
-        var langIdx = Math.min(Math.floor(cycleElapsed / LANG_STEP_MS), OTHER_LANGS.length - 1);
-
-        if (langIdx !== currentLangIdx) {
-          currentLangIdx = langIdx;
-          crossFadeWord(OTHER_LANGS[currentLangIdx]);
+            setTimeout(function() {
+              if (pl.parentNode) pl.parentNode.removeChild(pl);
+            }, 520);
+          }, STEP_MS);
         }
-      }
-
-      if (progress < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        // Phase 3: Seamless dissolve & hero entrance trigger
-        finishPreloader();
-      }
-    }
-
-    function finishPreloader() {
-      activeSlot.classList.remove('lang-active', 'hello-rise');
-      activeSlot.classList.add('lang-exit');
-
-      setTimeout(function() {
-        // Start smooth black curtain dissolve
-        pl.classList.add('fade-out');
-        document.body.classList.remove('preloader-active');
-        sessionStorage.setItem('preloaderShown', '1');
-
-        // Trigger hero entrance synchronously with curtain dissolve!
-        window.__heroEntranceTriggered = true;
-        window.dispatchEvent(new CustomEvent('heroEntranceTrigger'));
-
-        setTimeout(function() {
-          if (pl.parentNode) pl.parentNode.removeChild(pl);
-        }, 850);
-      }, 220);
-    }
-
-    requestAnimationFrame(tick);
+      }, STEP_MS);
+    }, HELLO_HOLD_MS);
   })();
   </script>
 
@@ -812,8 +682,8 @@
               <span class="af-val accent">CGPA 8.9 / 10.0 · 3rd Year</span>
             </div>
             <div class="about-fact-row">
-              <span class="af-label">national distinction</span>
-              <span class="af-val accent">NPTEL Top 5% · 96% Gold</span>
+              <span class="af-label">certification</span>
+              <span class="af-val accent">Microsoft Certified · SQL AI Dev</span>
             </div>
             <div class="about-fact-row">
               <span class="af-label">location</span>
