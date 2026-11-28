@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&family=Noto+Sans+Oriya:wght@400;600&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 
   <!-- PRELOADER CRITICAL CSS — Exact Nikola Radeski "Hello" letter-by-letter riseUpFade -->
   <style>
@@ -216,29 +216,47 @@
   <!-- =====================================================================
        CONTINUOUS HORIZONTAL CREDIBILITY MARQUEE (ROLLING RIBBON AFTER HERO)
   ===================================================================== -->
-  <div class="marquee-container" aria-hidden="true">
+  <section class="marquee-container" aria-label="Key achievements and credentials" tabindex="0">
     <div class="marquee-track" id="marqueeTrack">
-      <span class="marquee-item">CGPA 8.9 / 10.0 · SRMIST <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">262 Verified Pytest Tests Passing <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">NIRMAAN, IIT Madras Startup Incubation <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">5,000+ Cognitive Stimuli Processed <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">Microsoft Certified: SQL AI Developer Associate <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">NPTEL Java Top 5% Elite + Gold (96%) <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">250+ Make-A-Thon 3.0 Hackers Convened <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">Incoming Intern @ Labs24 <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">3rd Place @ E-Summit IDEATHON 2026 <span class="marquee-star">✱</span></span>
-      <!-- Duplicate for seamless infinite loop -->
-      <span class="marquee-item">CGPA 8.9 / 10.0 · SRMIST <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">262 Verified Pytest Tests Passing <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">NIRMAAN, IIT Madras Startup Incubation <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">5,000+ Cognitive Stimuli Processed <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">Microsoft Certified: SQL AI Developer Associate <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">NPTEL Java Top 5% Elite + Gold (96%) <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">250+ Make-A-Thon 3.0 Hackers Convened <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">Incoming Intern @ Labs24 <span class="marquee-star">✱</span></span>
-      <span class="marquee-item">3rd Place @ E-Summit IDEATHON 2026 <span class="marquee-star">✱</span></span>
+      <div class="marquee-group">
+        <span class="marquee-item"><span class="marquee-num">5,000+</span> Cognitive Stimuli Processed</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item"><span class="marquee-num">262</span> Automated Tests Passing</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item">Microsoft Certified: SQL AI Developer Associate</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item">NPTEL Java · Elite + Gold · Top <span class="marquee-num">5%</span> · <span class="marquee-num">96%</span></span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item">MentiScope AI Intern · IITM NIRMAAN</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item">Make-A-Thon 3.0 Convenor · <span class="marquee-num">250+</span> Participants</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item"><span class="marquee-num">3rd</span> Place · E-Summit IDEATHON 2026</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+        <span class="marquee-item">Incoming Full-Stack Developer Intern · Labs24</span>
+        <span class="marquee-sep" aria-hidden="true"></span>
+      </div>
+      <!-- Duplicate group for seamless infinite loop (hidden from screen readers) -->
+      <div class="marquee-group marquee-group-dup" aria-hidden="true">
+        <span class="marquee-item"><span class="marquee-num">5,000+</span> Cognitive Stimuli Processed</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item"><span class="marquee-num">262</span> Automated Tests Passing</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item">Microsoft Certified: SQL AI Developer Associate</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item">NPTEL Java · Elite + Gold · Top <span class="marquee-num">5%</span> · <span class="marquee-num">96%</span></span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item">MentiScope AI Intern · IITM NIRMAAN</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item">Make-A-Thon 3.0 Convenor · <span class="marquee-num">250+</span> Participants</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item"><span class="marquee-num">3rd</span> Place · E-Summit IDEATHON 2026</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-item">Incoming Full-Stack Developer Intern · Labs24</span>
+        <span class="marquee-sep"></span>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- =====================================================================
        SERVICES / CAPABILITIES (STICKY SPLIT-SCROLL COMPONENT WITH PREVIEW)
